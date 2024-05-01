@@ -1,7 +1,7 @@
 .globl _start
 
 .data 
-	size: .word 10
+	size: .word 3
     array: .word 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 .text
 
@@ -9,7 +9,7 @@ _start:
     la a0, array
     la a1, size
     lw a1, 0(a1)
-    jal ra, sumarray_it
+    # jal ra, sumarray_it
     jal ra, sumarray_rec
 
 exit:
@@ -32,21 +32,30 @@ sumarray_it:
     ret
 
 sumarray_rec:
+    # a0 = &array
+    # a1 = size(array)
     bgt a1, zero, else
         li a0, 0
         ret
     else:
+        # preservo ra e s0
         addi sp, sp, -16
         sd ra, 0(sp)
-        sd s1, 8(sp)
+        sd s0, 8(sp)
 
-        lw s1, 0(a0)
-        addi a1, a1, -1
+        # metto l'elemento attuale in s0
+        lw s0, 0(a0)
+
+        # array++, size-- e chiamo sumarray
         addi a0, a0, 4
-        jal ra, summary_rec
-        #TOdo
+        addi a1, a1, -1
+        jal ra, sumarray_rec
 
-        lw ra, 0(sp)
-        lw s1, 8(sp)
+        # sommo il contenuto di a0 con l'elemento in s0
+        add a0, a0, s0
+
+        # ripristino ra e s0 precedenti
+        ld ra, 0(sp)
+        ld s0, 8(sp)
         addi sp, sp, 16
         ret
