@@ -1,7 +1,7 @@
 .globl _start
 
 .data
-    numstr: .string "123"
+    numstr: .string "324567"
 .text
 
 _start:
@@ -12,33 +12,48 @@ _start:
     # chiama atoi 
     mv a1, a0 
     la a0, numstr
-    jal ra, atoi
+    jal ra, atoi_32bit
 exit:
     # addi x17, x0, 10  # call number 10 = exit
     addi a0, x0, 10  # call number 10 = exit
     ecall
 
 atoi:
-    # a0 = numstr, a1 = size(numstr)
-    bge a1, zero, else
+    # a0 = numstr, a1 = n
+    bgt a1, zero, else
         addi a0, zero, 0
         ret
     else:
+        # preservo ra e s0
+        addi sp, sp, -16
+        sd ra, 0(sp)
+        sd s0, 8(sp)
 
-    addi a1, a1, -1 # size = size - 1
-    add t0, a0, a1  # t0 = &numstr + size
-    lbu s1, 0(t0)   # s1 = *t0 = numstr[size]
-    addi s1, s1, -'0'   # converto il carattere in numero
-    jal atoi    # calcolo atoi(n-1)
+        # n--
+        addi a1, a1, -1
+        # calcolo indirizzo di array[n]
+        add t0, a0, a1
+        # metto l'elemento array[n] in s0
+        lb s0, 0(t0)
+        # chiamo atoi
+        jal ra, atoi
 
-    li t0, 10
-    mul t0, t0, a0  # t0 = atoi(n-1) * 10
-    add a0, s1, t0  # a0 = valore di numstr[size] sommato a t0
-    
+        # moltiplico per 10 il contenuto di a0
+        li t0, 10
+        mul a0, a0, t0
 
+        # ci sommo l'elemento prelevato prima
+        add a0, s0, a0
 
+        # tolgo '0'
+        addi a0, a0, -48
 
-    ret
+        # ripristino ra e s0
+        ld ra, 0(sp)
+        ld s0, 8(sp)
+        addi sp, sp, 16
+        ret
+
 
 strlen:
     addi t1, a0, 0

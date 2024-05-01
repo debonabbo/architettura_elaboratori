@@ -32,8 +32,7 @@ sumarray_it:
     ret
 
 sumarray_rec:
-    # a0 = &array
-    # a1 = size(array)
+    # a0 = &array, a1 = size(array)
     bgt a1, zero, else
         li a0, 0
         ret
