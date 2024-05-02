@@ -29,30 +29,22 @@ atoi:
         sd ra, 0(sp)
         sd s0, 8(sp)
 
-        # n--
-        addi a1, a1, -1
-        # calcolo indirizzo di array[n]
-        add t0, a0, a1
-        # metto l'elemento array[n] in s0
-        lb s0, 0(t0)
-        # chiamo atoi
-        jal ra, atoi
-
-        # moltiplico per 10 il contenuto di a0
+        addi a1, a1, -1     # n--
+        add t0, a0, a1      # calcolo indirizzo di array[n]
+        lb s0, 0(t0)        # metto l'elemento array[n] in s0
+        jal ra, atoi        # chiamo atoi
+        
         li t0, 10
-        mul a0, a0, t0
+        mul a0, a0, t0      # moltiplico per 10 il contenuto di a0
 
-        # ci sommo l'elemento prelevato prima
-        add a0, s0, a0
-
-        # tolgo '0'
-        addi a0, a0, -48
+        add a0, s0, a0      # ci sommo l'elemento prelevato prima
+        addi a0, a0, -48    # tolgo '0'
 
         # ripristino ra e s0
         ld ra, 0(sp)
         ld s0, 8(sp)
         addi sp, sp, 16
-        ret
+    ret
 
 
 strlen:
