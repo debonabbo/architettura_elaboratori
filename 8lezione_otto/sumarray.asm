@@ -42,19 +42,15 @@ sumarray_rec:
         sd ra, 0(sp)
         sd s0, 8(sp)
 
-        # metto l'elemento attuale in s0
-        lw s0, 0(a0)
+        lw s0, 0(a0)            # metto l'elemento attuale in s0
+        addi a0, a0, 4          # array++
+        addi a1, a1, -1         # size--
+        jal ra, sumarray_rec    # chiamo sumarray
 
-        # array++, size-- e chiamo sumarray
-        addi a0, a0, 4
-        addi a1, a1, -1
-        jal ra, sumarray_rec
-
-        # sommo il contenuto di a0 con l'elemento in s0
-        add a0, a0, s0
+        add a0, a0, s0          # sommo il contenuto di a0 con l'elemento in s0
 
         # ripristino ra e s0 precedenti
         ld ra, 0(sp)
         ld s0, 8(sp)
         addi sp, sp, 16
-        ret
+    ret
