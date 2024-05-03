@@ -31,7 +31,7 @@ selection_sort:
     bgt a1, t0, else
         ret
     else:
-        # preservo i registri che usero'
+        # preservo ra e i registri che usero'
         addi sp, sp, -24
         sd ra, 0(sp)
         sd s0, 8(sp)
@@ -52,7 +52,7 @@ selection_sort:
         addi a1, a1, -1         # size--
         jal ra, selection_sort  # chiamo selection_sort su &array, size(array)
 
-        # ripristino i registri utilizzati
+        # ripristino ra e i registri utilizzati
         ld ra, 0(sp)
         ld s0, 8(sp)
         ld s1, 16(sp)
