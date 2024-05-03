@@ -42,7 +42,6 @@ serief:
         
         add s1, s1, a0      # aggiungo il risultato di serief a s1
         addi a0, s0, -1     # calcolo x-3
-        addi s0, a0, 0      # lo salvo in s0
         jal ra, serief      # chiamo serief su x-3
         
         add a0, a0, s1      # aggiungo s1 al risultato di serief
