@@ -15,15 +15,6 @@ _start:
     li   a7, 10
     ecall   
 
-# void selection_sort(int array[], int size) {
-##    if (size <= 1) 
-#         return;
-    
-#     int min_idx = minarray(array, size);
-#     swap(array, 0, min_idx);
-#     selection_sort(array+1, size-1);
-# }  
-
 #****************************************************
 # completare la funzione selection_sort nel campo di sotto
 selection_sort:
